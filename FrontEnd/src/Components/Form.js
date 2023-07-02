@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
 import axios from "axios";
+import Registered from "./Registered";
 
 const storedData = [];
 
 const Form = () => {
   const nav = useNavigate();
-  const [registerStatus, setRegisterStatus] = useState("");
+  // const [registerStatus, setRegisterStatus] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     contactNo: "",
@@ -43,15 +44,15 @@ const Form = () => {
       .post("http://localhost:8000/user/register", tempObj)
       .then((res) => {
         console.log(res.data);
-
-        console.log("status", registerStatus);
-        setRegisterStatus(res.data);
+        const status = res.data;
+        console.log("status", status);
+        //setRegisterStatus(res.data);
+        nav("/user/registered");
+        <Registered status={status} />;
       })
       .catch((err) => {
         console.log(err);
       });
-
-    nav("/user/registered", { state: registerStatus });
   };
 
   return (
@@ -61,6 +62,8 @@ const Form = () => {
           {" "}
           <h1>FORM</h1>
           <form action="/registered" method="post">
+            <h2>Register Acount</h2>
+
             <label>Name :</label>
             <input
               type="text"
